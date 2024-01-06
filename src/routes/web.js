@@ -1,4 +1,5 @@
 import express from 'express'
+import { homeController } from '../controllers/homeController'
 
 const router = express.Router()
 
@@ -7,9 +8,7 @@ const router = express.Router()
  */
 
 const initWebRoutes = (app) => {
-  router.get('/', (req, res) => {
-    return res.send('<h1>LaQuangVinh huhu</h1>')
-  })
+  router.get('/', homeController.handleHomePage)
 
   app.use('/', router)
 }
