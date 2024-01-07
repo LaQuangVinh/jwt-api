@@ -39,8 +39,30 @@ const getUserList = async () => {
   return row
 }
 
+const getUserById = async (id) => {
+  // Create the connection to database
+  const connection = await connectionDB()
+  const [row, fields] = await connection.execute(
+    'SELECT * FROM users WHERE id = ?',
+    [id]
+  )
+  return row
+}
+
+const updateUserById = async (id, email, username) => {
+  // Create the connection to database
+  const connection = await connectionDB()
+  const [row, fields] = await connection.execute(
+    'UPDATE users SET email = ?, username = ? WHERE id = ?',
+    [email, username, id]
+  )
+  return row
+}
+
 export const userService = {
   handleCreateNewUser,
   getUserList,
-  handleDeleteNewUser
+  handleDeleteNewUser,
+  getUserById,
+  updateUserById
 }

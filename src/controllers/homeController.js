@@ -27,9 +27,27 @@ const handleDeleteNewUser = async (req, res) => {
   return res.redirect('/users')
 }
 
+// [GET] /users/delete-user/:id
+const handleUpdateNewUser = async (req, res) => {
+  const user = await userService.getUserById(req.params.id)
+  return res.render('updateUser.ejs', { user })
+}
+
+const handleUpdateNewUserSubmit = async (req, res) => {
+  const id = req.params.id
+  const email = req.body.email
+  const username = req.body.username
+
+  await userService.updateUserById(id, email, username)
+
+  return res.redirect('/users')
+}
+
 export const homeController = {
   handleHomePage,
   handleUserPage,
   handleCreateNewUser,
-  handleDeleteNewUser
+  handleDeleteNewUser,
+  handleUpdateNewUser,
+  handleUpdateNewUserSubmit
 }

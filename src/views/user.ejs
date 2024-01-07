@@ -70,7 +70,13 @@
                 <td><%= item.email %></td>
                 <td><%= item.username %></td>
                 <td>
-                  <button type="button" class="btn btn-warning">Edit</button>
+                  <form
+                    style="display: inline"
+                    action="/users/update-user/<%= item.id %>"
+                    method="GET"
+                  >
+                    <button type="submit" class="btn btn-warning">Edit</button>
+                  </form>
                   <form
                     style="display: inline"
                     action="/users/delete-user/<%= item.id %>?_method=DELETE"
