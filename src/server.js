@@ -4,6 +4,7 @@ import initWebRoutes from './routes/web'
 import { env } from './configs/environment'
 import bodyParser from 'body-parser'
 import methodOverride from 'method-override'
+// import connection from './configs/connectDB'
 
 const app = express()
 
@@ -13,6 +14,9 @@ app.use(methodOverride('_method'))
 //config body-parser
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+
+//test connectDB
+// connection()
 
 // config view engine
 configViewEngine(app)

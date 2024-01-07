@@ -14,7 +14,7 @@ const handleCreateNewUser = async (email, password, username) => {
   // Create the connection to database
   const connection = await connectionDB()
   const [row, fields] = await connection.execute(
-    'INSERT INTO User (email, password, username) VALUES (?, ?, ?)',
+    'INSERT INTO users (email, password, username) VALUES (?, ?, ?)',
     [email, hashPass, username]
   )
 
@@ -25,7 +25,7 @@ const handleDeleteNewUser = async (id) => {
   // Create the connection to database
   const connection = await connectionDB()
   const [row, fields] = await connection.execute(
-    'DELETE FROM User WHERE id = ?',
+    'DELETE FROM users WHERE id = ?',
     [id]
   )
 
@@ -35,34 +35,12 @@ const handleDeleteNewUser = async (id) => {
 const getUserList = async () => {
   // Create the connection to database
   const connection = await connectionDB()
-  const [row, fields] = await connection.execute('SELECT * FROM User')
-  return row
-}
-
-const getUserById = async (id) => {
-  // Create the connection to database
-  const connection = await connectionDB()
-  const [row, fields] = await connection.execute(
-    'SELECT * FROM User WHERE id = ?',
-    [id]
-  )
-  return row
-}
-
-const updateUserById = async (id, email, username) => {
-  // Create the connection to database
-  const connection = await connectionDB()
-  const [row, fields] = await connection.execute(
-    'UPDATE User SET email = ?, username = ? WHERE id = ?',
-    [email, username, id]
-  )
+  const [row, fields] = await connection.execute('SELECT * FROM users')
   return row
 }
 
 export const userService = {
   handleCreateNewUser,
   getUserList,
-  handleDeleteNewUser,
-  getUserById,
-  updateUserById
+  handleDeleteNewUser
 }
