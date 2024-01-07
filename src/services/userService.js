@@ -1,46 +1,46 @@
 import bcrypt from 'bcryptjs'
-import mysql from 'mysql2'
-import { env } from '../configs/environment'
-
-// create the connection to database
-const connection = mysql.createConnection({
-  host: env.LOCAL_DEV_APP_HOST,
-  user: 'root',
-  database: 'jwt'
-})
+import connectionDB from '../utils/connectionDB'
+// import bluebird from 'bluebird'
 
 // Store hash in your password DB.
 const salt = bcrypt.genSaltSync(10)
-
 const hashPassword = (password) => {
   const hashPass = bcrypt.hashSync(password, salt)
   return hashPass
 }
 
-const handleCreateNewUser = (email, password, username) => {
+const handleCreateNewUser = async (email, password, username) => {
   const hashPass = hashPassword(password)
-
-  connection.query(
+  // Create the connection to database
+  const connection = await connectionDB()
+  const [row, fields] = await connection.execute(
     'INSERT INTO users (email, password, username) VALUES (?, ?, ?)',
-    [email, hashPass, username],
-    function (err, results, fields) {
-      if (err) {
-        console.log('🚀 ~ file: userService.js:28 ~ err:', err)
-      }
-    }
+    [email, hashPass, username]
   )
+
+  return row
 }
 
-const getUserList = () => {
-  let userList
-  connection.query('SELECT * FROM users', function (err, results, fields) {
-    if (results) {
-      console.log('🚀 ~ file: userService.js:38 ~ results:', results)
-    }
-  })
+const handleDeleteNewUser = async (id) => {
+  // Create the connection to database
+  const connection = await connectionDB()
+  const [row, fields] = await connection.execute(
+    'DELETE FROM users WHERE id = ?',
+    [id]
+  )
+
+  return row
+}
+
+const getUserList = async () => {
+  // Create the connection to database
+  const connection = await connectionDB()
+  const [row, fields] = await connection.execute('SELECT * FROM users')
+  return row
 }
 
 export const userService = {
   handleCreateNewUser,
-  getUserList
+  getUserList,
+  handleDeleteNewUser
 }
