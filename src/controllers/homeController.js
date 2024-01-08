@@ -11,12 +11,12 @@ const handleUserPage = async (req, res) => {
 }
 
 // [POST] /users/create-user
-const handleCreateNewUser = (req, res) => {
+const handleCreateNewUser = async (req, res) => {
   const email = req.body.email
   const password = req.body.password
   const username = req.body.username
 
-  userService.handleCreateNewUser(email, password, username)
+  await userService.handleCreateNewUser(email, password, username)
 
   return res.redirect('/users')
 }
@@ -27,12 +27,17 @@ const handleDeleteNewUser = async (req, res) => {
   return res.redirect('/users')
 }
 
-// [GET] /users/delete-user/:id
+// [GET] /users/update-user/:id
 const handleUpdateNewUser = async (req, res) => {
   const user = await userService.getUserById(req.params.id)
+  console.log(
+    '🚀 ~ file: homeController.js:33 ~ handleUpdateNewUser ~ user:',
+    user
+  )
   return res.render('updateUser.ejs', { user })
 }
 
+// [PATCH] /users/update-user/:id
 const handleUpdateNewUserSubmit = async (req, res) => {
   const id = req.params.id
   const email = req.body.email

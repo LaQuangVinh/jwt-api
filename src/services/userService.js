@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs'
 import connectionDB from '../utils/connectDB'
+import db from '../models'
 // import bluebird from 'bluebird'
 
 // Store hash in your password DB.
@@ -11,52 +12,46 @@ const hashPassword = (password) => {
 
 const handleCreateNewUser = async (email, password, username) => {
   const hashPass = hashPassword(password)
-  // Create the connection to database
-  const connection = await connectionDB()
-  const [row, fields] = await connection.execute(
-    'INSERT INTO User (email, password, username) VALUES (?, ?, ?)',
-    [email, hashPass, username]
-  )
 
-  return row
+  await db.User.create({
+    email,
+    username,
+    password: hashPass
+  })
 }
 
 const handleDeleteNewUser = async (id) => {
-  // Create the connection to database
-  const connection = await connectionDB()
-  const [row, fields] = await connection.execute(
-    'DELETE FROM User WHERE id = ?',
-    [id]
-  )
-
-  return row
+  await db.User.destroy({
+    where: {
+      id
+    }
+  })
 }
 
 const getUserList = async () => {
   // Create the connection to database
-  const connection = await connectionDB()
-  const [row, fields] = await connection.execute('SELECT * FROM User')
-  return row
+  const userList = await db.User.findAll()
+  return userList
 }
 
 const getUserById = async (id) => {
-  // Create the connection to database
-  const connection = await connectionDB()
-  const [row, fields] = await connection.execute(
-    'SELECT * FROM User WHERE id = ?',
-    [id]
-  )
-  return row
+  const user = await db.User.findOne({
+    where: {
+      id
+    }
+  })
+  return user
 }
 
 const updateUserById = async (id, email, username) => {
-  // Create the connection to database
-  const connection = await connectionDB()
-  const [row, fields] = await connection.execute(
-    'UPDATE User SET email = ?, username = ? WHERE id = ?',
-    [email, username, id]
+  await db.User.update(
+    { email, username },
+    {
+      where: {
+        id
+      }
+    }
   )
-  return row
 }
 
 export const userService = {

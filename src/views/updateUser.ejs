@@ -16,7 +16,7 @@
         <div class="row">
           <form
             method="POST"
-            action="/users/update-user/<%= user[0].id %>?_method=PATCH"
+            action="/users/update-user/<%= user.id %>?_method=PATCH"
             class="col-6 mt-3"
           >
             <h4>Update a new user</h4>
@@ -29,7 +29,7 @@
                 aria-describedby="emailHelp"
                 name="email"
                 required
-                value="<%= user[0].email %>"
+                value="<%= user.email %>"
               />
               <div id="emailHelp" class="form-text">
                 We'll never share your email with anyone else.
@@ -42,7 +42,7 @@
                 class="form-control"
                 id="username"
                 name="username"
-                value="<%= user[0].username %>"
+                value="<%= user.username %>"
               />
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
